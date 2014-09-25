@@ -42,9 +42,9 @@ def to_dna(dna):
 #input dna returns reverse complement DNA
     print "Deprecated, use rev_comp instead"
     dna_complement = ''
-    for nuc in dna:
+    for nuc in reversed(dna):
         dna_complement += complement_nuc(nuc)
-    return dna_complement.reverse()
+    return dna_complement
 
 
 def rev_comp(dna, string="rna"):
@@ -65,4 +65,10 @@ def to_rna_sense(dna):
             rna += nuc
     return rna
 
-
+def calculate_gc(dna):
+# input dna return percentage GC
+    count = 0.0
+    for nuc in dna:
+        if nuc == 'G' or nuc == 'C':
+            count +=1
+    return count / len(dna) * 100
