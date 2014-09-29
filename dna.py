@@ -3,6 +3,8 @@
 #TODO assert statements on input and output and/or duck typing
 #good comments
 #use each rosalind problem as a unit test case for these functions
+#could be refactored to make use of numpy and real 2D arrays but that's cheating!
+#turn this into nucleic acid class
 
 
 def count(DNA):

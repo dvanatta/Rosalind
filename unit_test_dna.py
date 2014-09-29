@@ -1,6 +1,8 @@
 import unittest
 import dna 
 #maybe roll this into a parser test?
+#include parser test on simple files for both txt and rosalind
+
 dataset = parser.parse_rosalind("ex5.txt")
 
 class DNATests(unittest.TestCase):
