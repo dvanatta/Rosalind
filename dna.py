@@ -5,6 +5,8 @@
 #good comments
 #use each rosalind problem as a unit test case for these functions
 # should probably rework dna/rna into a class
+#could be refactored to make use of numpy and real 2D arrays but that's cheating!
+#turn this into nucleic acid class
 
 def count(dna):
 #input DNA string, returns count of of each nucleic acid
