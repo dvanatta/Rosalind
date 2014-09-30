@@ -122,30 +122,37 @@ def motif(s,t):
 
 
 def consensus(input):
-#input in rosalind array
+#input in rosalind array, returns consensus sequence and score_matrix
     dna_array = []
     for i in input:
         dna_array.append(i[1])  
-        print dna_array
     N = len(dna_array[0])
-    output = [[0]*N, [0]*N, [0]*N, [0]*N]
+#this is similar to count block i should probably call it
+    scores = [[0]*N, [0]*N, [0]*N, [0]*N]
     for i in range(len(dna_array)):
         for j in range(len(dna_array[i])):
             if dna_array[i][j] == "A":
-                output[0][j] += 1
+                scores[0][j] += 1
             if dna_array[i][j] == "C":
-                output[1][j] += 1
+                scores[1][j] += 1
             if dna_array[i][j] == "G":
-                output[2][j] += 1
+                scores[2][j] += 1
             if dna_array[i][j] == "T":
-                output[3][j] += 1
-#    for i in range(len(N)):
-#        nuc = max (output[i]    
-    return output            
- #   for i in range(len(dna_array[0])):
- #       countA, countC, countG, countT = 0, 0, 0, 0
- #       block = [row[i] for row in dna_array]
- #       print block, count(block)
+                scores[3][j] += 1
+#this should maybe be it's own function aka "score"
+    seq =''
+    for i in range(N):
+        block = [row[i] for row in scores]
+        nuc = block.index(max(block))
+        if nuc == 0:
+            seq += "A"
+        if nuc == 1:
+            seq += "C"
+        if nuc == 2:
+            seq += "G"
+        if nuc == 3:
+            seq += "T"
+    return seq, scores            
 
 
 

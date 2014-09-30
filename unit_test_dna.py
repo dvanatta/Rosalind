@@ -34,6 +34,9 @@ class DNATests(unittest.TestCase):
     def test_translate(self):
         self.assertEqual("MAMAPRTEINSTRING", dna.translate("AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"))
 
-
+    def test_motif(self):
+        pass
+    def test_consensus(self):
+        pass
 if __name__ == '__main__':
     unittest.main()
