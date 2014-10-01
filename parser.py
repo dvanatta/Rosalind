@@ -1,5 +1,5 @@
 # library of input parsers.  will probably end up with just fasta?
-
+# if there aren't going to be other parser types I can just roll these two into a smart parser
 def parse_txt(filename):
 #returns 1d array of dna strings, or just string if len(1)
     dna_list = []
@@ -17,6 +17,7 @@ def parse_rosalind(filename):
     for line in open(filename):
         line = line.rstrip()
         if line[0] == '>':
+            line = line[1:len(line)]
             if store:
                 dataset[row][1] = store
                 store = ''

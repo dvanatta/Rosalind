@@ -154,5 +154,17 @@ def consensus(input):
             seq += "T"
     return seq, scores            
 
-
-
+def vert(array,i):
+    column = [row [i] for row in array]
+    return column
+    
+def overlap(rosalind_array, k=3):
+#input 2d rosalind array and option k, returns edges where suffix s matches prefix of t to k places
+    dna_array = vert(rosalind_array, 1) 
+    edges = []
+    for i in range(len(dna_array)):
+        for j in range(len(dna_array)):
+            if i != j:
+                if dna_array[i][-k:len(dna_array[i])] == dna_array[j][0:k]:
+                    edges.append([rosalind_array[i][0], rosalind_array[j][0]])
+    return edges
