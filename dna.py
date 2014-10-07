@@ -48,6 +48,11 @@ def to_dna(dna):
         dna_complement += complement_nuc(nuc)
     return dna_complement
 
+def comp(dna, string = "dna"):
+    dna_comp = ''
+    for nuc in dna:
+        dna_comp += complement_nuc(nuc, string)
+    return dna_comp
 
 def rev_comp(dna, string="rna"):
 #input dna returns reverse complement. select "dna" or "rna"
@@ -177,3 +182,56 @@ def glyco_motif(seq):
             locations.append(i+1)
     return locations
 
+
+
+#Should try to generalize this for N length palindromes..  
+def res_site(seq):
+    seqB = comp(seq, "dna")
+    print seq, seqB
+    for i in range(len(seq)-11):
+        if seq[i] == seqB[i+11] and seq[i+1] == seqB[i+10] and seq[i+2] == seqB[i+9] and seq[i+3] == seqB[i+8] and seq[i+4] == seqB[i+7] and seq[i+5] == seqB[i+6]:    
+            print i+1, "12"
+    for i in range(len(seq) - 9):
+        if seq[i] == seqB[i+9] and seq[i+1] == seqB[i+8] and seq[i+2] == seqB[i+7] and seq[i+3] == seqB[i+6] and seq[i+4] == seqB[i+5]:
+            print i+1, "10"
+    for i in range(len(seq)-7):
+        if seq[i] == seqB[i+7] and seq[i+1] == seqB[i+6] and seq[i+2] == seqB[i+5] and seq[i+3] == seqB[i+4]:
+            print i+1, "8"    
+    for i in range(len(seq)-5):
+        if seq[i] == seqB[i+5] and seq[i+1] == seqB[i+4] and seq[i+2] == seqB[i+3]:
+            print i+1, "6"    
+    for i in range(len(seq)-3):
+        if seq[i] == seqB[i+3] and seq[i+1] == seqB[i+2]:
+            print i+1, "4"    
+       
+
+def mass_p(seq):
+    mass_table = {
+    'A': 71.03711,
+    'C': 103.00919,
+    'D': 115.02694,
+    'E': 129.04259,
+    'F': 147.06841,
+    'G': 57.02146,
+    'H': 137.05891,
+    'I': 113.08406,
+    'K': 128.09496,
+    'L': 113.08406,
+    'M': 131.04049,
+    'N': 114.04293,
+    'P': 97.05276,
+    'Q': 128.05858,
+    'R': 156.10111,
+    'S': 87.03203,
+    'T': 101.04768,
+    'V': 99.06841,
+    'W': 186.07931,
+    'Y': 163.06333,
+}
+    total_mass = 0
+    for i in seq:
+        total_mass += mass_table[i]
+    return total_mass 
+
+
+       
