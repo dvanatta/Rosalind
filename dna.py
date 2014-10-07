@@ -168,3 +168,12 @@ def overlap(rosalind_array, k=3):
                 if dna_array[i][-k:len(dna_array[i])] == dna_array[j][0:k]:
                     edges.append([rosalind_array[i][0], rosalind_array[j][0]])
     return edges
+
+def glyco_motif(seq):
+    #optimization : find all N * [ST] *, then delete all matches containing a P
+    locations = []
+    for i in range(len(seq)-4):
+        if seq[i] == 'N' and seq[i+1] != 'P' and (seq[i+2] == 'S' or seq[i+2] == 'T') and seq[i+3] != 'P':
+            locations.append(i+1)
+    return locations
+
