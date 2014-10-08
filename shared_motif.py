@@ -1,13 +1,35 @@
-#starti with loop with shortest length
+#start with loop with shortest length
 #check every other string for full match
 #break if not match
+#repeat with shortest loop - 1
 
-#for each substring need to be a double loop over the number of strings and the number of posible pairings = (len(string)-len(substring)+1)
 import parser
 import dna
 dna_array = dna.vert(parser.parse_rosalind("rosalind_lcsm.txt"),1)
 #dna_array = dna.vert(parser.parse_rosalind("ex13.txt"),1)
 
+
+def has_motif(dna,sub):
+    for i in range(len(dna)-len(sub)+1):
+        if dna[i:i+len(sub)] == sub:
+            return True
+    return False
+
+
+def check_motifs(dna_array,substring):
+    glob_match = True 
+    for dna in dna_array:
+        local_match = has_motif(dna,substring)
+        if local_match:
+            pass
+        else:
+            glob_match = False
+        if local_match == False:
+            break
+    if glob_match == True:
+            return substring
+
+            
 def enumerate_substrings(dna_array):
     substring = []
     shortest_dna = dna_array[0]
@@ -18,33 +40,9 @@ def enumerate_substrings(dna_array):
         sub_len= n + 1 
         substring.append([])
         for j in range(len(shortest_dna)-n): # number of possibilities based on substring length
-            substring[len(shortest_dna)-sub_len].append(shortest_dna[j:j+sub_len])
+            sub = check_motifs(dna_array,shortest_dna[j:j+sub_len])
+            if sub:
+                return sub 
 
-    return substring 
-
-substrings = enumerate_substrings(dna_array)        
-print substrings
-
-def check_motif(s,t):
-    for i in range(len(s)-len(t)+1):
-        if s[i:i+len(t)] == t:
-            return True
-    return False
-
-def check_motifs(dna_array,substrings):
-    for n in substrings:
-        for sub in n:
-            glob_match = True 
-            for dna in dna_array:
-                local_match = check_motif(dna,sub)
-                if local_match:
-                    pass
-                else:
-                    glob_match = False
-                if local_match == False:
-                     break
-            if glob_match == True:
-                    return sub
-            
-
-print check_motifs(dna_array,substrings)
+#print check_motifs(dna_array,substrings)
+print enumerate_substrings(dna_array)
