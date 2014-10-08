@@ -1,4 +1,4 @@
-#move tables to separate file
+#move tables to separate file or global variales
 #Make sure all scripts end up in here ie shared motifs.py and delete when added
 # should probably refactor all of this to use real 2D arrays instea of this nested list crap
 # library of simple functions for bioinformatics analysis DKV 9/2014
@@ -81,7 +81,7 @@ def to_rna_sense(dna):
 
 
 def calculate_gc(dna):
-# input dna return percentage GC
+# input seq return percentage GC
     count = 0.0
     for nuc in dna:
         if nuc == 'G' or nuc == 'C':
@@ -90,7 +90,7 @@ def calculate_gc(dna):
 
 
 def calculate_hamming(dna1, dna2):
-#if strings are mismatch lengths treat add the difference to score
+# input two seq returns hamming score
     hamming = 0.0
     lendna1 = len(dna1)
     lendna2 = len(dna2)
@@ -98,11 +98,12 @@ def calculate_hamming(dna1, dna2):
     for i in range(short_strand):
         if dna1[i] != dna2[i]:
             hamming += 1
-    hamming += abs(lendna1-lendna2)
+    hamming += abs(lendna1-lendna2) # add length diff to score
     return hamming
 
 
 def translate(rna):
+#input rna seq returns protein seq
     protein = ''
     codon_table = {"UUU":"F", "UUC":"F", "UUA":"L", "UUG":"L",
        "UCU":"S", "UCC":"S", "UCA":"S", "UCG":"S",
@@ -127,6 +128,7 @@ def translate(rna):
 
 
 def motif(s,t):
+#input string, substring returns index of all matches
     matches = []
     for i in range(len(s)):
         if s[i:i+len(t)] == t:
@@ -140,7 +142,7 @@ def consensus(input):
     for i in input:
         dna_array.append(i[1])  
     N = len(dna_array[0])
-#this is similar to count block i should probably call it
+    #this is similar to count block i should probably call it
     scores = [[0]*N, [0]*N, [0]*N, [0]*N]
     for i in range(len(dna_array)):
         for j in range(len(dna_array[i])):
@@ -152,7 +154,7 @@ def consensus(input):
                 scores[2][j] += 1
             if dna_array[i][j] == "T":
                 scores[3][j] += 1
-#this should maybe be it's own function aka "score"
+    #this should maybe be it's own function aka "score"
     seq =''
     for i in range(N):
         block = [row[i] for row in scores]
@@ -169,6 +171,7 @@ def consensus(input):
 
 
 def vert(array,i):
+#input array and column number, returns column as list
     column = [row [i] for row in array]
     return column
 
@@ -186,7 +189,8 @@ def overlap(rosalind_array, k=3):
 
 
 def glyco_motif(seq):
-    #optimization? : find all N * [ST] *, then delete all matches containing a P
+#input seq, returns all locations of glycosolation motif
+#optimization? : find all N * [ST] *, then delete all matches containing a P
     locations = []
     for i in range(len(seq)-4):
         if seq[i] == 'N' and seq[i+1] != 'P' and (seq[i+2] == 'S' or seq[i+2] == 'T') and seq[i+3] != 'P':
@@ -196,6 +200,7 @@ def glyco_motif(seq):
 
 #Should try to generalize this for N length palindromes, also store output instead of print
 def res_site(seq):
+#input seq, locates restriction sites (ie reservse palindromes of lengths 4-12)
     seqB = comp(seq, "dna")
     print seq, seqB
     for i in range(len(seq)-11):
@@ -216,6 +221,7 @@ def res_site(seq):
        
 
 def mass_p(seq):
+#input protein returns mass
     mass_table = {
     'A': 71.03711,
     'C': 103.00919,
@@ -245,6 +251,7 @@ def mass_p(seq):
 
 
 def enum_rna(seq):
+#input seq, returns numbers of possible mra % 1000000
     amino_codon_table = {
     "A" : 4,
     "R" : 6,
@@ -300,6 +307,7 @@ def check_motifs(dna_array,substring):
 #check every other seq for full match
 #break if not match in seq
 #repeat with shortest loop - 1
+#would it be quicker to loop starting from the smallest? probably depends on the data set.  try it on rosalind
 def longest_common_shared_motif(dna_array):
 #input array of dna, returns longest common substring
     shortest_dna = dna_array[0]
