@@ -1,3 +1,5 @@
+#move tables to separate file
+#Make sure all scripts end up in here ie shared motifs.py and delete when added
 # should probably refactor all of this to use real 2D arrays instea of this nested list crap
 # library of simple functions for bioinformatics analysis DKV 9/2014
 # this library should focus on functions which take dna string as input
@@ -7,6 +9,7 @@
 # should probably rework dna/rna into a class
 #could be refactored to make use of numpy and real 2D arrays but that's cheating!
 #turn this into nucleic acid class
+
 
 def count(dna):
 #input DNA string, returns count of of each nucleic acid
@@ -21,6 +24,7 @@ def count(dna):
         if nuc == 'T':
             T += 1
     return A, C, G, T
+
 
 def complement_nuc(nuc, strand="dna"):
 #input nucleic acid, returns RNA complement
@@ -39,6 +43,7 @@ def complement_nuc(nuc, strand="dna"):
         if nuc == 'A':
            return 'U'
 
+
 #DEPRECAED USE rev_comp instead
 def to_dna(dna):
 #input dna returns reverse complement DNA
@@ -48,11 +53,13 @@ def to_dna(dna):
         dna_complement += complement_nuc(nuc)
     return dna_complement
 
+
 def comp(dna, string = "dna"):
     dna_comp = ''
     for nuc in dna:
         dna_comp += complement_nuc(nuc, string)
     return dna_comp
+
 
 def rev_comp(dna, string="rna"):
 #input dna returns reverse complement. select "dna" or "rna"
@@ -80,6 +87,7 @@ def calculate_gc(dna):
         if nuc == 'G' or nuc == 'C':
             count +=1
     return count / len(dna) * 100
+
 
 def calculate_hamming(dna1, dna2):
 #if strings are mismatch lengths treat add the difference to score
@@ -117,13 +125,13 @@ def translate(rna):
         protein += codon_table[rna[ind]+rna[ind + 1]+rna[ind + 2]]
     return protein.rstrip()
 
+
 def motif(s,t):
     matches = []
     for i in range(len(s)):
         if s[i:i+len(t)] == t:
             matches.append(i+1)
     return matches
-
 
 
 def consensus(input):
@@ -159,9 +167,11 @@ def consensus(input):
             seq += "T"
     return seq, scores            
 
+
 def vert(array,i):
     column = [row [i] for row in array]
     return column
+
     
 def overlap(rosalind_array, k=3):
 #input 2d rosalind array and option k, returns edges where suffix s matches prefix of t to k places
@@ -174,8 +184,9 @@ def overlap(rosalind_array, k=3):
                     edges.append([rosalind_array[i][0], rosalind_array[j][0]])
     return edges
 
+
 def glyco_motif(seq):
-    #optimization : find all N * [ST] *, then delete all matches containing a P
+    #optimization? : find all N * [ST] *, then delete all matches containing a P
     locations = []
     for i in range(len(seq)-4):
         if seq[i] == 'N' and seq[i+1] != 'P' and (seq[i+2] == 'S' or seq[i+2] == 'T') and seq[i+3] != 'P':
@@ -183,8 +194,7 @@ def glyco_motif(seq):
     return locations
 
 
-
-#Should try to generalize this for N length palindromes..  
+#Should try to generalize this for N length palindromes, also store output instead of print
 def res_site(seq):
     seqB = comp(seq, "dna")
     print seq, seqB
@@ -234,4 +244,74 @@ def mass_p(seq):
     return total_mass 
 
 
-       
+def enum_rna(seq):
+    amino_codon_table = {
+    "A" : 4,
+    "R" : 6,
+    "D" : 2,
+    "N" : 2,
+    "C" : 2,
+    "E" : 2,
+    "Q" : 2,
+    "G" : 4,
+    "H" : 2,
+    "I" : 3,
+    "L" : 6,
+    "K" : 2,
+    "M" : 1,
+    "F" : 2,
+    "P" : 4,
+    "S" : 6,
+    "T" : 4,
+    "W" : 1,
+    "Y" : 2,
+    "V" : 4,
+}
+    total = 3 #start at 3 because of stop codons
+    for i in range(len(seq)):
+        total *=  amino_codon_table[seq[i]]
+    return total % 1000000
+
+
+def has_motif(dna,sub):
+#input dna and substring, checks if substring is in this dna
+    for i in range(len(dna)-len(sub)+1):
+        if dna[i:i+len(sub)] == sub:
+            return True
+    return False
+
+
+def check_motifs(dna_array,substring):
+#input array of dna and a substring, returns substring if substring is in all dna
+    glob_match = True 
+    for dna in dna_array:
+        local_match = has_motif(dna,substring)
+        if local_match:
+            pass
+        else:
+            glob_match = False
+        if local_match == False:
+            break
+    if glob_match == True:
+            return substring
+
+
+#start with loop with shortest length
+#check every other seq for full match
+#break if not match in seq
+#repeat with shortest loop - 1
+def longest_common_shared_motif(dna_array):
+#input array of dna, returns longest common substring
+    shortest_dna = dna_array[0]
+    for i in range(len(dna_array)):
+        if len(shortest_dna) > len(dna_array[i]):
+            shortest_dna = dna_array[i]
+    for n in reversed(range(len(shortest_dna))): 
+        sub_len= n + 1 
+        for j in range(len(shortest_dna)-n): # number of possibilities based on substring length
+            sub = check_motifs(dna_array,shortest_dna[j:j+sub_len])
+            if sub:
+                return sub 
+
+
+

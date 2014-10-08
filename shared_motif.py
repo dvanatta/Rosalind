@@ -1,7 +1,3 @@
-#start with loop with shortest length
-#check every other string for full match
-#break if not match
-#repeat with shortest loop - 1
 
 import parser
 import dna
@@ -10,6 +6,7 @@ dna_array = dna.vert(parser.parse_rosalind("rosalind_lcsm.txt"),1)
 
 
 def has_motif(dna,sub):
+#input dna and substring, checks if substring is in this dna
     for i in range(len(dna)-len(sub)+1):
         if dna[i:i+len(sub)] == sub:
             return True
@@ -17,6 +14,7 @@ def has_motif(dna,sub):
 
 
 def check_motifs(dna_array,substring):
+#input array of dna and a substring, returns substring if substring is in all dna
     glob_match = True 
     for dna in dna_array:
         local_match = has_motif(dna,substring)
@@ -29,16 +27,17 @@ def check_motifs(dna_array,substring):
     if glob_match == True:
             return substring
 
-            
-def enumerate_substrings(dna_array):
-    substring = []
+#start with loop with shortest length
+#check every other seq for full match
+#break if not match in seq
+#repeat with shortest loop - 1
+def longest_common_shared_motif(dna_array):
     shortest_dna = dna_array[0]
     for i in range(len(dna_array)):
         if len(shortest_dna) > len(dna_array[i]):
             shortest_dna = dna_array[i]
     for n in reversed(range(len(shortest_dna))): 
         sub_len= n + 1 
-        substring.append([])
         for j in range(len(shortest_dna)-n): # number of possibilities based on substring length
             sub = check_motifs(dna_array,shortest_dna[j:j+sub_len])
             if sub:

@@ -38,5 +38,7 @@ class DNATests(unittest.TestCase):
         pass
     def test_consensus(self):
         pass
+    def test_longest_common(self):
+        pass
 if __name__ == '__main__':
     unittest.main()
