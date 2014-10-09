@@ -11,6 +11,9 @@
 #turn this into nucleic acid class
 import math
 
+
+#HALP
+#I end up writing out constructs like this one with 4 if clauses a lot, is there a better way to do something like this?
 def count(dna):
 #input DNA string, returns count of of each nucleic acid
     A, T, C, G = 0, 0, 0, 0
@@ -197,7 +200,7 @@ def glyco_motif(seq):
             locations.append(i+1)
     return locations
 
-
+#HALP
 #Should try to generalize this for N length palindromes, also store output instead of print
 def res_site(seq):
 #input seq, locates restriction sites (ie reservse palindromes of lengths 4-12)
@@ -350,4 +353,29 @@ def random_string(seq,probs):
                 output[i] += pt
             else:
                 output[i] += pg 
-    return output 
+    return output
+
+
+
+#should rewrite the motif search using this table
+def kmp_fail(seq):
+#input seq, returns failure array
+    fail_array = [0]*len(seq)
+    streak = 0
+    ind = 1
+    while ind < len(seq):
+#        print seq[ind], seq[streak]
+        if seq[ind] == seq[streak]:
+            streak += 1
+#            print "match, so failure array at", ind, "should be ", streak, "and we are done with", ind , "streak +1"
+            fail_array[ind] = streak
+            ind += 1
+        elif streak > 0:
+#            print "no match so fall back"
+            streak = fail_array[streak-1] 
+        else:
+#            print "not match so failure array at", ind," should be ", streak," and we are done with ", ind, "reset streak"
+            fail_array[ind] = streak
+            ind += 1
+    return fail_array
+
