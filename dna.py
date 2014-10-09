@@ -9,7 +9,7 @@
 # should probably rework dna/rna into a class
 #could be refactored to make use of numpy and real 2D arrays but that's cheating!
 #turn this into nucleic acid class
-
+import math
 
 def count(dna):
 #input DNA string, returns count of of each nucleic acid
@@ -86,7 +86,7 @@ def calculate_gc(dna):
     for nuc in dna:
         if nuc == 'G' or nuc == 'C':
             count +=1
-    return count / len(dna) * 100
+    return count / len(dna)
 
 
 def calculate_hamming(dna1, dna2):
@@ -314,12 +314,40 @@ def longest_common_shared_motif(dna_array):
     for i in range(len(dna_array)):
         if len(shortest_dna) > len(dna_array[i]):
             shortest_dna = dna_array[i]
-    for n in reversed(range(len(shortest_dna))): 
-        sub_len= n + 1 
-        for j in range(len(shortest_dna)-n): # number of possibilities based on substring length
-            sub = check_motifs(dna_array,shortest_dna[j:j+sub_len])
+    len_shortest = len(shortest_dna)
+    for n in reversed(range(len_shortest)): 
+        for j in range(len_shortest-n): # number of possibilities based on substring length
+            sub = check_motifs(dna_array,shortest_dna[j:j+n+1])
             if sub:
                 return sub 
 
 
+#i dont think this will work if there is more than one substring match because the loop will go wonky after the splice.  fix by appending good dna to a diff string
+def splice(dna_array):
+#input array of [dna, substring1, substring2...]. splices out all substrings then transcribes and translates to return protein
+    dna = dna_array[0]
+    len_dna = len(dna)
+    spliced_dna = ''
+    for i in range(len(dna_array)-1):
+        substring = dna_array[i+1]
+        len_sub = len(substring)
+        for i in range(len_dna-len_sub):
+            if dna[i:i+len_sub] == substring:
+                dna = dna[0:i]+dna[i+len_sub:len(dna)]
+                i = i + len_sub
+    return translate(to_rna_sense(dna))
 
+
+def random_string(seq,probs):
+    len_probs = len(probs)
+    output = [0]*len_probs
+    gc = calculate_gc(seq)
+    for i in range(len_probs):
+        pg = math.log10(probs[i]/2)
+        pt = math.log10((1-probs[i])/2)
+        for j in seq:
+            if j == 'A' or j == 'T':
+                output[i] += pt
+            else:
+                output[i] += pg 
+    return output 
