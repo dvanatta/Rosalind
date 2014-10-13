@@ -1,14 +1,12 @@
-#move tables to separate file or global variales
-#Make sure all scripts end up in here ie shared motifs.py and delete when added
-# should probably refactor all of this to use real 2D arrays instea of this nested list crap
-# library of simple functions for bioinformatics analysis DKV 9/2014
+# library of generally naive functions for bioinformatics analysis DKV 9/2014
 # this library should focus on functions which take dna string as input
 #TODO assert statements on input and output and/or duck typing
+#move tables to separate file or global variales
+#Make sure all scripts end up in here ie shared motifs.py and delete when added
+# refactoring: should i make this a class?  should rna and protein be inherited? 
+# should probably refactor all of this to use real 2D arrays instea of this nested list crap
 #good comments
 #use each rosalind problem as a unit test case for these functions
-# should probably rework dna/rna into a class
-#could be refactored to make use of numpy and real 2D arrays but that's cheating!
-#turn this into nucleic acid class
 import math
 
 
