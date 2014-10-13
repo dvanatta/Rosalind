@@ -1,5 +1,5 @@
-# library of input parsers.  will probably end up with just fasta?
-# if there aren't going to be other parser types I can just roll these two into a smart parser
+# library of input parsers.  will probably end up with just fasta
+# if there aren't going to be other parser types I can just roll these into a smart parser
 import numpy
 import urllib2
 

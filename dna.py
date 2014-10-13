@@ -293,7 +293,8 @@ def has_motif(dna,sub):
             return True
     return False
 
-
+#HALP
+#is it ok to pass arrays like this?  Or should i make it global or something
 def check_motifs(dna_array,substring):
 #input array of dna and a substring, returns substring if substring is in all dna
     glob_match = True 
