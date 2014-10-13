@@ -107,6 +107,7 @@ def calculate_hamming(dna1, dna2):
 
 def translate(rna):
 #input rna seq returns protein seq
+#doesn't return anything if no stop codon
     protein = ''
     codon_table = {"UUU":"F", "UUC":"F", "UUA":"L", "UUG":"L",
        "UCU":"S", "UCC":"S", "UCA":"S", "UCG":"S",
@@ -126,8 +127,10 @@ def translate(rna):
        "GGU":"G", "GGC":"G", "GGA":"G", "GGG":"G",}
     for i in range(len(rna)/3):
         ind = 3*i
-        protein += codon_table[rna[ind]+rna[ind + 1]+rna[ind + 2]]
-    return protein.rstrip()
+        codon = codon_table[rna[ind]+rna[ind + 1]+rna[ind + 2]]
+        protein += codon
+        if codon == "":
+            return protein.rstrip()
 
 
 def motif(s,t):
@@ -379,3 +382,32 @@ def kmp_fail(seq):
             ind += 1
     return fail_array
 
+
+def find_met(seq):
+    start_locations = []
+    for i in range(len(seq)-2):
+        if seq[i] == 'A' and seq[i+1] == 'U' and seq[i+2] == 'G':
+            start_locations.append(i)
+    return start_locations 
+
+#HALP
+#I should reuse this loop somehow but i need to combine everyting into one protein array at the end
+# i guess i can just pass the protein array...
+def open_reading_frame(seq):
+#input rna, find all MET and make proteins until stop
+    seqA = to_rna_sense(seq)
+    seqB = rev_comp(seq)
+    mets = find_met(seqA)
+    mets2 = find_met(seqB)
+    protein_array = []
+    for i in range(len(mets)):
+        protein = translate(seqA[mets[i]:])
+        if protein and protein not in protein_array:
+            protein_array.append(protein)
+    for i in range(len(mets2)):
+        protein = translate(seqB[mets2[i]:])
+        if protein and protein not in protein_array:
+            protein_array.append(protein)
+    return protein_array
+
+#open_reading_frame("AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG")
