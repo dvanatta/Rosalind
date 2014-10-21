@@ -6,6 +6,7 @@
 # refactoring: should i make this a class?  should rna and protein be inherited? 
 # should probably refactor all of this to use real 2D arrays instea of this nested list crap
 #good comments
+# where to use generators??
 #use each rosalind problem as a unit test case for these functions
 import math
 
@@ -390,7 +391,8 @@ def find_met(seq):
     return start_locations 
 
 #HALP
-#I should reuse this loop somehow but i need to combine everyting into one protein array at the end
+#DRY
+#I should reuse the for loop somehow but i need to combine everyting into one protein array at the end
 # i guess i can just pass the protein array...
 def open_reading_frame(seq):
 #input rna, find all MET and make proteins until stop
@@ -409,4 +411,17 @@ def open_reading_frame(seq):
             protein_array.append(protein)
     return protein_array
 
-#open_reading_frame("AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG")
+
+# Recursion woooo
+def enum_lex(n, alphabet = ["T", "A", "G", "C"]):
+#input n and an alphabet, returns all possible "words" that can be made from this alphabet in order
+    if n == 1:
+        return alphabet
+    else:
+        previous_output = enum_lex(n-1, alphabet)
+        output = []
+        for letter in alphabet:
+            for i in range(len(previous_output)):
+                output.append(letter+previous_output[i])
+        return output
+
