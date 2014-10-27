@@ -10,4 +10,4 @@ install: python setup.py install
 
 # run tests
 script: 
- - pep8 dna_tools 
+ - pep8 dna.py 
