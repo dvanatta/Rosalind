@@ -1,6 +1,6 @@
 import unittest
 import dna 
-import parser
+import dna_parser
 #maybe roll this into a parser test?
 #include parser test on simple files for both txt and rosalind
 
