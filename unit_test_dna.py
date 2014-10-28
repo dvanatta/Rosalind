@@ -25,7 +25,7 @@ class DNATests(unittest.TestCase):
         self.assertEqual('ACCGGGUUUU',dna.rev_comp('AAAACCCGGT', "rna"))
 
     def test_gc(self):
-        self.assertAlmostEqual(60.919540, dna.calculate_gc("CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT"),4)
+        self.assertAlmostEqual(.60919540, dna.calculate_gc("CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT"),4)
 
     def test_hamming(self):
         self.assertEqual(7, dna.calculate_hamming('GAGCCTACTAACGGGAT','CATCGTAATGACGGCCT'))
