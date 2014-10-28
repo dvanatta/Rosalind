@@ -11,4 +11,5 @@ install: python setup.py install
 # run tests
 script: 
  - nosetests
- - pep8 dna.py 
+# - pep8 dna.py 
+ - pep8 dna_parser.py 
