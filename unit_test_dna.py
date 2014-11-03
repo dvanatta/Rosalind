@@ -1,10 +1,10 @@
 import unittest
 import dna 
-import parser
+import dna_parser
 #maybe roll this into a parser test?
 #include parser test on simple files for both txt and rosalind
 
-dataset = parser.parse_rosalind("ex5.txt")
+dataset = dna_parser.parse_rosalind("Examples/ex5.txt")
 
 class DNATests(unittest.TestCase):
 
@@ -25,7 +25,7 @@ class DNATests(unittest.TestCase):
         self.assertEqual('ACCGGGUUUU',dna.rev_comp('AAAACCCGGT', "rna"))
 
     def test_gc(self):
-        self.assertAlmostEqual(60.919540, dna.calculate_gc("CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT"),4)
+        self.assertAlmostEqual(.60919540, dna.calculate_gc("CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT"),4)
 
     def test_hamming(self):
         self.assertEqual(7, dna.calculate_hamming('GAGCCTACTAACGGGAT','CATCGTAATGACGGCCT'))
