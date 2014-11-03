@@ -1,20 +1,21 @@
 # library of generally naive functions for bioinformatics analysis DKV 9/2014
 # this library should focus on functions which take dna string as input
-#TODO assert statements on input and output and/or duck typing
-#move tables to separate file or global variales
-#Make sure all scripts end up in here ie shared motifs.py and delete when added
-# refactoring: should i make this a class?  should rna and protein be inherited? 
-# should probably refactor all of this to use real 2D arrays instea of this nested list crap
-#good comments
+# TODO assert statements on input and output and/or duck typing
+# move tables to separate file or global variales
+# Make sure all scripts end up in here ie shared motifs.py; delete when added
+# refactoring: should i make this a class?  rna and protein inherited?
+# could refactor all of this to use real 2D arrays instead
+# good comments
 # where to use generators??
-#use each rosalind problem as a unit test case for these functions
+# use each rosalind problem as a unit test case for these functions
 import math
 
 
-#HALP
-#I end up writing out constructs like this one with 4 if clauses a lot, is there a better way to do something like this?
+# HALP
+# Make this a dictionary lookup
 def count(dna):
-#input DNA string, returns count of of each nucleic acid
+r""" Input: string of nucleotides 
+  Returns: count of each nucleotide"""
     A, T, C, G = 0, 0, 0, 0
     for nuc in dna:
         if nuc == 'A':
