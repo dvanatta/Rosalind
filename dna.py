@@ -11,7 +11,6 @@
 import math
 
 
-# HALP
 # Make this a dictionary lookup
 # catch all else
 def count(dna):
