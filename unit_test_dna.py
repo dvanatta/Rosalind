@@ -35,7 +35,7 @@ class DNATests(unittest.TestCase):
         self.assertEqual("MAMAPRTEINSTRING", dna.translate("AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"))
 
     def test_motif(self):
-        pass
+        self.assertEqual([2, 4, 10], dna.motif("GATATATGCATATACTT", "ATAT"))    
     def test_consensus(self):
         pass
     def test_longest_common(self):
