@@ -7,14 +7,19 @@ Code written to solve problems at http://rosalind.info
 
 My Profile: http://rosalind.info/users/dvanatta/
 
-dna.py main module
 
-dna_parser.py parser written to process rosalind inputs
+Descriptions
+============
+dna.py -  main module
 
-unit_test_dna.py use previous solutions as unit test cases
+dna_parser.py - parser written to process rosalind inputs
 
-wrappers/ contains the small scripts required to process input files and format output files to fit Rosalind criteria
+unit_test_dna.py - use previous solutions as unit test cases
 
-pop_scripts/ contains solutions to non sequence based problems
+.travis.yml - runs unit test, nosetests and enforces pep8 compliance
 
-Examples/ contains .txt input files for test case and actual case
+wrappers/ - contains the small scripts required to process input files and format output files to fit Rosalind criteria
+
+pop_scripts/ - contains solutions to non sequence based problems
+
+Examples/ - contains .txt input files for test case and actual case
