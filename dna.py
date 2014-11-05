@@ -1,13 +1,17 @@
-# library of generally naive functions for bioinformatics analysis DKV 9/2014
-# this library should focus on functions which take dna string as input
-# use each rosalind problem as a unit test case for these functions
-# TODO move tables to separate file or global variales
-# Make sure all scripts end up in here ie shared motifs.py; delete when added
-# refactoring: should i make this a class?  rna and protein inherited?
-# could refactor all of this to use real 2D arrays instead
-# assert statements on input and output and/or duck typing
-# good comments
-# where to use generators??
+"""
+Functions for bioinformatics analysis DKV 9/2014
+https://github.com/dvanatta/Rosalind
+
+Notes
+-----
+Focus on functions which take dna string as input
+Use each rosalind problem as a unit test case for these functions
+
+TODO
+----
+Move tables to separate file or global variales
+Could refactor all of this to use real 2D numpy arrays
+"""
 import math
 
 
