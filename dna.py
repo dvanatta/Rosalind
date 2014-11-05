@@ -12,7 +12,6 @@ import math
 
 
 # Make this a dictionary lookup
-# catch all else
 def count(dna):
     """
     Counts occurences of each nucleotide in DNA
@@ -31,12 +30,15 @@ def count(dna):
     for nuc in dna:
         if nuc == 'A':
             A += 1
-        if nuc == 'C':
+        elif nuc == 'C':
             C += 1
-        if nuc == 'G':
+        elif nuc == 'G':
             G += 1
-        if nuc == 'T':
+        elif nuc == 'T':
             T += 1
+        else:
+            print "nucleotide must be A,C,G or T"
+            break
     return A, C, G, T
 
 
@@ -58,18 +60,16 @@ def complement_nuc(nuc, strand="dna"):
     """
     if nuc == 'G':
         return 'C'
-    if nuc == 'C':
+    elif nuc == 'C':
         return 'G'
-    if nuc == 'T':
+    elif nuc == 'T':
         return 'A'
-
-    if strand == 'dna':
-        if nuc == 'A':
-            return 'T'
-
-    if strand == 'rna':
-        if nuc == 'A':
-            return 'U'
+    elif nuc == 'A' and strand == 'dna':
+        return 'T'
+    elif nuc == 'A' and strand == 'rna':
+        return 'U'
+    else:
+        print "Couldn't find a complement"
 
 
 # TODO Don't add strings! write to array then cast at the end
@@ -734,8 +734,7 @@ def open_reading_frame(seq):
 def enum_lex(n, alphabet=["T", "A", "G", "C"]):
     """
     Returns all possible words of length n that can be made from alphabet
-    return words in lexographic order
-    used recursion cuz I'm a boss
+    recursive algorithm to return words in lexographic order
 
     Parameters
     ----------
@@ -758,3 +757,33 @@ def enum_lex(n, alphabet=["T", "A", "G", "C"]):
             for i in range(len(previous_output)):
                 word_list.append(letter+previous_output[i])
         return word_list
+
+
+def trans_ratio(s, t):
+    """
+    Calculates transition/transversion ratio between two dna seqs
+
+    Parameters
+    ----------
+    s,t : str
+        input seqs to compare
+
+    Returns
+    -------
+    transitions/transversions : float
+         ratio of transitions to transversions
+    """
+    transitions, transversions = 0.0, 0.0
+    for i in range(len(t)):
+        if s[i] != t[i]:
+            print "not match enter count loop"
+            if s[i] == "G" and t[i] == "A" or s[i] == "A" and t[i] == "G":
+                print "G <-> A transition"
+                transitions += 1
+            elif s[i] == "C" and t[i] == "T" or s[i] == "T" and t[i] == "C":
+                print "C <-> T transition"
+                transitions += 1
+            else:
+                print "transversion"
+                transversions += 1
+    return transitions/transversions
