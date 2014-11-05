@@ -4,17 +4,19 @@
 # count dominant allele
 
 pairs = []
-def mate(k,m,n):
-    individual = "k"*k+"m"*m+"n"*n
-    for i in range(len(individual)-1):
-        pairs.append(individual[0]+individual[i+1])
+
+
+def mate(k, m, n):
+    individual = "k" * k + "m" * m + "n" * n
+    for i in range(len(individual) - 1):
+        pairs.append(individual[0] + individual[i + 1])
     if individual:
         if individual[0] == 'k':
-            mate(k-1,m,n)
+            mate(k - 1, m, n)
         if individual[0] == 'm':
-            mate(k,m-1,n)
+            mate(k, m - 1, n)
         if individual[0] == 'n':
-            mate(k,m,n-1)
+            mate(k, m, n - 1)
     else:
         print pairs
         return pairs
@@ -33,7 +35,7 @@ def sum(pairs):
             count += 0
         else:
             print i
-    return count / len(pairs) 
+    return count / len(pairs)
 mate(20, 28, 23)
 
-print sum(pairs) 
+print sum(pairs)
