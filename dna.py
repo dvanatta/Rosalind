@@ -787,3 +787,71 @@ def trans_ratio(s, t):
                 print "transversion"
                 transversions += 1
     return transitions/transversions
+
+
+def spliced_motif(s, t):
+    """
+    Finds collection of indices of s in which the symbols of t are subseq
+    not necessarily continuous
+
+    Parameters
+    ----------
+    s : str
+        input main sequence
+    t : str
+        subseq to locate
+
+    Returns
+    -------
+    matches : list (of ints)
+        indices of s that make up t
+    """
+    i, j = 0, 0
+    while i in range(len(s) - len(t) - 1):
+        matches = []
+        while j <= len(t) - 1:
+            if s[i] == t[j]:
+                matches.append(i + 1)
+                j += 1
+                i += 1
+            else:
+                i += 1
+            if j == len(t):
+                return matches
+
+
+# takes in array of lens and original sequencei
+# finds index of longest seq with last value less than current value
+def find_longest_dec(len_seqs, sequence, i, sign="dec"):
+    max_ind = None
+    max_val = 1
+    for j in range(i):
+        if sign == "dec":
+            if sequence[j] > sequence[i] and len_seqs[j] >= max_val:
+                max_val = len_seqs[j]
+                max_ind = j
+        elif sign == "inc":
+            if sequence[j] < sequence[i] and len_seqs[j] >= max_val:
+                max_val = len_seqs[j]
+                max_ind = j
+    return max_ind
+
+
+# takes seq, locate longest possible decreasing(or increasing) subseq
+def longest_decreasing_subseq(sequence, sign="dec"):
+    N = len(sequence)
+    long_seq = [[]] * N
+    len_sequence = [0] * N
+    for i in range(N):
+        if i == 0:
+            long_seq[0] = str(sequence[0])
+            len_sequence[0] = 1
+        else:
+            ind = find_longest_dec(len_sequence, sequence, i, sign)
+            if ind is not None:
+                long_seq[i] = long_seq[ind] + ' ' + str(sequence[i])
+                len_sequence[i] = len_sequence[ind] + 1
+            else:
+                long_seq[i] = str(sequence[i])
+                len_sequence[i] = 1
+    return long_seq[len_sequence.index(max(len_sequence))]
