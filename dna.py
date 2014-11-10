@@ -700,8 +700,31 @@ def find_met(seq):
     return start_locations
 
 
-# HALP
-# figure out how to do both ranges in one loop
+def translate_from_mets(seq, protein_array):
+    """
+    Translates sequence into proteins based locations of met
+    Only stores unique proteins
+
+    Parameters
+    ----------
+    seq : str
+        Input sequence of nucelotides
+    protein_array : list (of str)
+        contains proteins already translated
+
+    Returns
+    -------
+    start_locations : list (of ints)
+        Index of all Met
+    """
+    mets = find_met(seq)
+    for i in range(len(mets)):
+        protein = translate(seq[mets[i]:])
+        if protein and protein not in protein_array:
+            protein_array.append(protein)
+    return protein_array
+
+
 def open_reading_frame(seq):
     """
     Figure out all possible proteins from a given seq
@@ -720,17 +743,9 @@ def open_reading_frame(seq):
     """
     seqA = to_rna_sense(seq)
     seqB = rev_comp(seq)
-    mets = find_met(seqA)
-    mets2 = find_met(seqB)
     protein_array = []
-    for i in range(len(mets)):
-        protein = translate(seqA[mets[i]:])
-        if protein and protein not in protein_array:
-            protein_array.append(protein)
-    for i in range(len(mets2)):
-        protein = translate(seqB[mets2[i]:])
-        if protein and protein not in protein_array:
-            protein_array.append(protein)
+    protein_array = translate_from_mets(seqA, protein_array)
+    protein_array = translate_from_mets(seqB, protein_array)
     return protein_array
 
 
