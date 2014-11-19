@@ -15,7 +15,6 @@ Could refactor all of this to use real 2D numpy arrays
 import math
 
 
-# Make this a dictionary lookup
 def count(dna):
     """
     Counts occurences of each nucleotide in DNA
@@ -27,7 +26,7 @@ def count(dna):
 
     Returns
     -------
-    A, C, G, T : ints
+    counts : dict
          Count of each nucleotide
     """
     counts = {"A": 0, "C": 0, "G": 0, "T": 0}
@@ -52,16 +51,12 @@ def complement_nuc(nuc, strand="dna"):
     str
     Corresponding nucleotide
     """
-    if nuc == 'G':
-        return 'C'
-    elif nuc == 'C':
-        return 'G'
-    elif nuc == 'T':
-        return 'A'
-    elif nuc == 'A' and strand == 'dna':
-        return 'T'
-    elif nuc == 'A' and strand == 'rna':
-        return 'U'
+    complements_dna = {"G": "C", "C": "G", "T": "A", "A": "T"}
+    complements_rna = {"G": "C", "C": "G", "T": "A", "A": "U"}
+    if strand == 'dna':
+        return complements_dna[nuc]
+    elif strand == 'rna':
+        return complements_rna[nuc]
     else:
         print "Couldn't find a complement"
 
