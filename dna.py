@@ -61,7 +61,6 @@ def complement_nuc(nuc, strand="dna"):
         print "Couldn't find a complement"
 
 
-# TODO Don't add strings! write to array then cast at the end
 def rev_comp(dna, strand="rna"):
     """
     Returns reverse complement nucleic acid
@@ -85,7 +84,6 @@ def rev_comp(dna, strand="rna"):
     return rna
 
 
-# TODO don't add strings
 def comp(dna, strand="dna"):
     """
     Returns complement nucleic acid
@@ -101,13 +99,13 @@ def comp(dna, strand="dna"):
     dna_comp : str
          Strand complement to input
     """
-    dna_comp = ''
+    dna_comp = [] 
     for nuc in dna:
-        dna_comp += complement_nuc(nuc, strand)
+        dna_comp.append(complement_nuc(nuc, strand))
+    dna_comp = ''.join(map(str,dna_comp))
     return dna_comp
 
 
-# TODO Don't add strings
 def to_rna_sense(dna):
     """
     Returns rna sense strand corresponding to input DNA
@@ -123,12 +121,13 @@ def to_rna_sense(dna):
     rna : str
         rna sense strand
     """
-    rna = ''
+    rna = [] 
     for nuc in dna:
         if nuc == 'T':
-            rna += 'U'
+            rna.append('U')
         else:
-            rna += nuc
+            rna.append(nuc)
+    rna = ''.join(map(str,rna))
     return rna
 
 
