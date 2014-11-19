@@ -78,9 +78,10 @@ def rev_comp(dna, strand="rna"):
     rna : str
          Strand reversed and complement to input
     """
-    rna = ''
+    rna = []
     for nuc in reversed(dna):
-        rna += complement_nuc(nuc, strand)
+        rna.append(complement_nuc(nuc, strand))
+    rna = ''.join(map(str,rna))
     return rna
 
 
