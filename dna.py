@@ -69,7 +69,7 @@ def rev_comp(dna, strand="rna"):
     ----------
     dna : str
         Input sequence of nucelotides
-    strand : "dna" or "dna"
+    strand : "dna" or "rna"
         Choose output strand type
 
     Returns
@@ -80,7 +80,7 @@ def rev_comp(dna, strand="rna"):
     rna = []
     for nuc in reversed(dna):
         rna.append(complement_nuc(nuc, strand))
-    rna = ''.join(map(str,rna))
+    rna = ''.join(map(str, rna))
     return rna
 
 
@@ -99,10 +99,10 @@ def comp(dna, strand="dna"):
     dna_comp : str
          Strand complement to input
     """
-    dna_comp = [] 
+    dna_comp = []
     for nuc in dna:
         dna_comp.append(complement_nuc(nuc, strand))
-    dna_comp = ''.join(map(str,dna_comp))
+    dna_comp = ''.join(map(str, dna_comp))
     return dna_comp
 
 
@@ -121,13 +121,13 @@ def to_rna_sense(dna):
     rna : str
         rna sense strand
     """
-    rna = [] 
+    rna = []
     for nuc in dna:
         if nuc == 'T':
             rna.append('U')
         else:
             rna.append(nuc)
-    rna = ''.join(map(str,rna))
+    rna = ''.join(map(str, rna))
     return rna
 
 
@@ -509,7 +509,7 @@ def has_motif(dna, sub):
 
 
 # HALP
-# is it ok to pass arrays like this? should i make it global?
+# could make array global instead of passing
 def check_motifs(dna_array, substring):
     """
     Check if substring is in all dna seqs
@@ -572,7 +572,7 @@ def longest_common_shared_motif(dna_array):
                 return sub
 
 
-# i dont think this will work if there is more than one substring match
+# I dont think this will work if there is more than one substring match
 # because the loop will go wonky after the splice.
 # fix by appending good dna to a diff string
 def splice(dna_array):
