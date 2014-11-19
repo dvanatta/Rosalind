@@ -30,20 +30,10 @@ def count(dna):
     A, C, G, T : ints
          Count of each nucleotide
     """
-    A, T, C, G = 0, 0, 0, 0
+    counts = {"A": 0, "C": 0, "G": 0, "T": 0}
     for nuc in dna:
-        if nuc == 'A':
-            A += 1
-        elif nuc == 'C':
-            C += 1
-        elif nuc == 'G':
-            G += 1
-        elif nuc == 'T':
-            T += 1
-        else:
-            print "nucleotide must be A,C,G or T"
-            break
-    return A, C, G, T
+        counts[nuc] += 1
+    return counts["A"], counts["C"], counts["G"], counts["T"]
 
 
 def complement_nuc(nuc, strand="dna"):
