@@ -4,7 +4,7 @@ import dna_parser
 # include parser test on simple files for both txt and rosalind
 
 dataset = dna_parser.parse_rosalind("Examples/ex5.txt")
-
+seq = dataset[0][1]
 
 class DNATests(unittest.TestCase):
 
@@ -42,7 +42,9 @@ class DNATests(unittest.TestCase):
    
    
     def test_consensus(self):
-        pass
+        test_set = dna_parser.parse_fasta("Examples/ex_con.txt")
+        con_seq, scores = dna.consensus(test_set)
+        self.assertEqual("ATGCAACT", con_seq)
    
    
     def test_longest_common(self):
