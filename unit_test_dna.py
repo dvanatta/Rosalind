@@ -51,5 +51,10 @@ class DNATests(unittest.TestCase):
         pass
 
 
+    def test_longest_dec_sub(self):
+        self.assertEqual("0 2 6 9 11 15", dna.longest_subseq([0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15], "inc"))
+        self.assertEqual("12 10 9 5 3", dna.longest_subseq([0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15], "dec"))
+
+
 if __name__ == '__main__':
     unittest.main()

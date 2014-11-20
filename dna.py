@@ -363,7 +363,7 @@ def glyco_motif(seq):
     return locations
 
 
-# HALP
+# TODO 
 # Should try to generalize this for N length palindromes
 # store output instead of print
 def res_site(seq):
@@ -508,7 +508,7 @@ def has_motif(dna, sub):
     return False
 
 
-# HALP
+# TODO
 # could make array global instead of passing
 def check_motifs(dna_array, substring):
     """
@@ -637,6 +637,7 @@ def random_string(seq, probs):
 def kmp_fail(seq):
     """
     Calculate failure array for KMP search function
+    ref wikipedia entry on knuth morris pratt
 
     Parameters
     ----------
@@ -824,9 +825,10 @@ def spliced_motif(s, t):
                 return matches
 
 
-# takes in array of lens and original sequencei
+# takes in array of lengths and original sequence
 # finds index of longest seq with last value less than current value
-def find_longest_dec(len_seqs, sequence, i, sign="dec"):
+# ie candidates for new longest seq (if there is one)
+def find_longest_sub(len_seqs, sequence, i, sign="dec"):
     max_ind = None
     max_val = 1
     for j in range(i):
@@ -842,7 +844,8 @@ def find_longest_dec(len_seqs, sequence, i, sign="dec"):
 
 
 # takes seq, locate longest possible decreasing(or increasing) subseq
-def longest_decreasing_subseq(sequence, sign="dec"):
+# ref wikipedia
+def longest_subseq(sequence, sign="dec"):
     N = len(sequence)
     long_seq = [[]] * N
     len_sequence = [0] * N
@@ -851,7 +854,7 @@ def longest_decreasing_subseq(sequence, sign="dec"):
             long_seq[0] = str(sequence[0])
             len_sequence[0] = 1
         else:
-            ind = find_longest_dec(len_sequence, sequence, i, sign)
+            ind = find_longest_sub(len_sequence, sequence, i, sign)
             if ind is not None:
                 long_seq[i] = long_seq[ind] + ' ' + str(sequence[i])
                 len_sequence[i] = len_sequence[ind] + 1
