@@ -363,7 +363,7 @@ def glyco_motif(seq):
     return locations
 
 
-# TODO 
+# TODO
 # Should try to generalize this for N length palindromes
 # store output instead of print
 def res_site(seq):
