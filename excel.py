@@ -1,16 +1,20 @@
 """ Regarding Interview on 11/15
 Create a program to load a text file 
 Calculate values using rpn
-Throw error if in loop
+Throw error if in cyclic loop
 """
 
 input_data = open("test_data.txt", "r").readlines()
-#input_data = open("norec.txt", "r").readlines()
-output = []
+outfile = open("rpn_output.txt", "w")
 size = map(int,input_data[0].split())
+number_list = []
+histroy = []
 
 def mapping(pointer, history):
-#    print "in making function, history, pointer", history, pointer.rstrip()
+    """
+    Takes in a reference (ie "A2") and returns the value of that cell
+    Also keeps track of history to detect loops
+    """
     mapping = {"A": 1, "B": 2}
     if pointer in history:
         history = []
@@ -18,42 +22,38 @@ def mapping(pointer, history):
         return None, history 
     else: 
         history.append(pointer.rstrip())
-#        print "new spot, appending", pointer, "to history which is now", history
-#    print pointer
-#    print "pointer points to cell", (mapping[pointer[0]]-1)*size[0]+int(pointer[1])
         return input_data[(mapping[pointer[0]]-1)*size[0]+int(pointer[1])], history
-number_list = []
-histroy = []
+
+
 def rpn(cell):
+    """
+    Calculate Value of cell
+    """
     global history
-#    print cell
+    cell = map(str.strip, cell.split())
     for i in cell:
-#        print i,number_list
         if i[0].isalpha():
-#            print "global history", history
-            new_cell, history2 = mapping(i,history)
-#            print "new_cel", new_cell.rstrip(), history2
+            new_cell, history = mapping(i,history)
             if new_cell:
-                new_cell = map(str.strip, new_cell.split())
                 rpn(new_cell)
         elif i == '+':
             number_list[0] += number_list.pop(1) 
-#            print "i added! z =",number_list[0] 
         elif i == '-':
             number_list[0] -= number_list.pop(1) 
-#            print "i subtracted z =", number_list[0]
+        elif i == '*':
+            number_list[0] *= number_list.pop(1) 
+        elif i == '/':
+            number_list[0] /= number_list.pop(1) 
         else:
-            z = float(i)
-            number_list.append(z)
+            number_list.append(float(i))
     history = []
     return number_list
 
 
 for i in input_data[1:]:
     number_list = []
-#    print "before rpn i =", i
-    i = map(str.strip, i.split())
-    print "cell", i,
     final = rpn(i)
-    print "FINAL VALUE", final
-
+    if final:
+        outfile.write(str(final[0])+'\n')
+    else:
+        outfile.write("Error"+"\n")
