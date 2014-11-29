@@ -1,59 +1,78 @@
 """ Regarding Interview on 11/15
-Create a program to load a text file 
+Create a program to load a text file
 Calculate values using rpn
-Throw error if in cyclic loop
+Throw error if in loop
 """
-
 input_data = open("test_data.txt", "r").readlines()
-outfile = open("rpn_output.txt", "w")
-size = map(int,input_data[0].split())
-number_list = []
-histroy = []
+output_file = open("output.txt", "w")
+size = map(int, input_data[0].split())
+history = []
 
-def mapping(pointer, history):
+
+def mapping(pointer):
     """
-    Takes in a reference (ie "A2") and returns the value of that cell
+    Takes in a reference (ie "A2") and returns value of that cell
     Also keeps track of history to detect loops
     """
+    print "in mapping function to follow ref", pointer, "history is", history
     mapping = {"A": 1, "B": 2}
     if pointer in history:
-        history = []
         print "Cyclic error"
-        return None, history 
-    else: 
+        return None
+    else:
         history.append(pointer.rstrip())
-        return input_data[(mapping[pointer[0]]-1)*size[0]+int(pointer[1])], history
+        cell_value = (mapping[pointer[0]]-1)*size[0]+int(pointer[1])
+        print "new cell adding", pointer, "to history which is now", history
+        print "pointer points to cell", cell_value
+        return map(str.strip, input_data[cell_value].split())
 
 
 def rpn(cell):
     """
     Calculate Value of cell
+    Loops over cell with 3 conditions:
+    If cell is ref (ie "A1"):
+       evaluate
+    if cell is number:
+        store value for calculation
+    if cell is operator:
+        perform operation on stored numbers
+    Cyclic loops set cell to None which breaks loop.
     """
-    global history
-    cell = map(str.strip, cell.split())
-    for i in cell:
-        if i[0].isalpha():
-            new_cell, history = mapping(i,history)
-            if new_cell:
-                rpn(new_cell)
-        elif i == '+':
-            number_list[0] += number_list.pop(1) 
-        elif i == '-':
-            number_list[0] -= number_list.pop(1) 
-        elif i == '*':
-            number_list[0] *= number_list.pop(1) 
-        elif i == '/':
-            number_list[0] /= number_list.pop(1) 
+    number_list = []
+    while cell:
+        if cell[0] is None:
+            return
+        if cell[0][0].isalpha():
+            ref_cell = mapping(cell[0])
+            if ref_cell is None:
+                return
+            cell[0] = rpn(ref_cell)
+        # pythonic method for case statements
+        elif cell[0] == '+':
+            number_list[0] += number_list.pop(1)
+            cell.pop(0)
+        elif cell[0] == '-':
+            number_list[0] -= number_list.pop(1)
+            cell.pop(0)
+        elif cell[0] == '*':
+            number_list[0] *= number_list.pop(1)
+            cell.pop(0)
+        elif cell[0] == '/':
+            number_list[0] /= number_list.pop(1)
+            cell.pop(0)
         else:
-            number_list.append(float(i))
-    history = []
-    return number_list
+            number_list.append(float(cell[0]))
+            cell.pop(0)
+    return str(number_list[0])
 
 
 for i in input_data[1:]:
-    number_list = []
-    final = rpn(i)
-    if final:
-        outfile.write(str(final[0])+'\n')
+    print "Starting New Cell"
+    final_value = rpn(map(str.strip, i.split()))
+    print "Cell Evaluates to", final_value
+    if final_value:
+        output_file.write(final_value+"\n")
     else:
-        outfile.write("Error"+"\n")
+        output_file.write("Cyclic Error\n")
+    history = []  # clear history after finishing cell evaluation
