@@ -44,7 +44,7 @@ def rpn(cell):
     while cell:
         if cell[0] is None:
             return
-        if cell[0][0].isalpha():
+        elif cell[0][0].isalpha():
             ref_cell = mapping(cell[0])
             if ref_cell is None:
                 return
