@@ -5,6 +5,7 @@ Throw error if in loop
 """
 input_data = open("test_data.txt", "r").readlines()
 output_file = open("output.txt", "w")
+output_file.write(input_data[0]) # transfer dimensions
 size = map(int, input_data[0].split())
 history = []
 
