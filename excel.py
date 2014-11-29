@@ -16,13 +16,13 @@ def mapping(pointer):
     Also keeps track of history to detect loops
     """
     print "in mapping function to follow ref", pointer, "history is", history
-    mapping = {"A": 1, "B": 2}
+    mapping_dict = {"A": 1, "B": 2}
     if pointer in history:
         print "Cyclic error"
         return None
     else:
         history.append(pointer.rstrip())
-        cell_value = (mapping[pointer[0]]-1)*size[0]+int(pointer[1])
+        cell_value = (mapping_dict[pointer[0]]-1)*size[0]+int(pointer[1])
         print "new cell adding", pointer, "to history which is now", history
         print "pointer points to cell", cell_value
         return map(str.strip, input_data[cell_value].split())
