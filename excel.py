@@ -15,18 +15,17 @@ def mapping(pointer):
     Takes in a reference (ie "A2") and returns location of that cell (ie 2)
     """
     print "in mapping function to follow ref", pointer, "history is", history
-    history.append(pointer) 
     mapping_dict = {"A": 1, "B": 2}
     cell_value = (mapping_dict[pointer[0]]-1)*size[0]+int(pointer[1])
     return cell_value
 
 
 def rpn(i):
+    global history
     """
     Calculate Value of cell
    If cell is none -> error condition
    If cell is number -> no evaluation required
-   If cell is just ref -> follow ref (store history)
    If cell is expression -> loop over cell
        If cell[i] is ref (ie "A1"):
           evaluate
@@ -42,31 +41,25 @@ def rpn(i):
     elif ' ' not in cell and not any(value.isalpha() for value in cell):
         # if no (spaces or letters) cell doesn't need more evaluation
         print "Cell already evaluated"
+        history = []
         return cell
-    elif ' ' not in cell:
-        # i think this loop needs to be removed because this first case of the logic evaluation will catch this.  
-        # cell has letter but no spaces; must be just pointer
-        # check for cyclic errors 
-        if cell.rstrip() in history:
-            print "Cyclic Error"
-            return None
-        else:
-            print "Cell is pointer"
-#            history.append(cell.rstrip())
-            new_cell = rpn(mapping(cell.rstrip()))
     else:
         # cell is expresssion, need to do logic
         cell = cell.split()
         number_list = []
         print "Cell is expression"
         while cell:
+            print "cell is", cell
             if cell[0][0].isalpha():
-                 print "cell was", cell
-                 cell[0] = rpn(mapping(cell[0].rstrip()))
-                 print "cell is now", cell
- #                input_data[i] = cell
-                 print "input data is now", input_data
-                 if cell[0] is None:
+                cell_index = mapping(cell[0].rstrip())
+                if cell_index in history:
+                    print "Cyclic Error"
+                    return None
+                else:
+                    print "Value is pointer"
+                    history.append(cell_index)
+                    cell[0] = rpn(cell_index)
+                if cell[0] is None:
                      return None
             # pythonic method for case statements
             elif cell[0] == '+':
