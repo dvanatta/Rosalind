@@ -5,7 +5,7 @@ Throw error if in loop
 """
 input_data = open("test_data.txt", "r").readlines()
 output_file = open("output.txt", "w")
-output_file.write(input_data[0]) # transfer dimensions
+output_file.write(input_data[0])  # transfer dimensions
 size = map(int, input_data[0].split())
 history = []
 
@@ -21,12 +21,11 @@ def mapping(pointer):
 
 
 def rpn(i):
-    global history
     """
     Calculate Value of cell
-   If cell is none -> error condition
-   If cell is number -> no evaluation required
-   If cell is expression -> loop over cell
+    If cell is none -> error condition
+    If cell is number -> no evaluation required
+    If cell is expression -> loop over cell
        If cell[i] is ref (ie "A1"):
           evaluate
        if cell[i] is number:
@@ -34,34 +33,33 @@ def rpn(i):
        if cell[i] is operator:
            perform operation on stored numbers
     """
+    global history
     cell = input_data[i]
     print "New call to rpn, cell=", cell
     if cell is None:
+        # Error condition
         return None
-    elif ' ' not in cell and not any(value.isalpha() for value in cell):
+    if ' ' not in cell and not any(value.isalpha() for value in cell):
         # if no (spaces or letters) cell doesn't need more evaluation
         print "Cell already evaluated"
         history = []
         return cell
     else:
-        # cell is expresssion, need to do logic
+        print "Cell is expression, evaluating cell"
         cell = cell.split()
         number_list = []
-        print "Cell is expression"
         while cell:
-            print "cell is", cell
             if cell[0][0].isalpha():
+                print "Value is pointer"
                 cell_index = mapping(cell[0].rstrip())
                 if cell_index in history:
                     print "Cyclic Error"
                     return None
                 else:
-                    print "Value is pointer"
                     history.append(cell_index)
                     cell[0] = rpn(cell_index)
                 if cell[0] is None:
-                     return None
-            # pythonic method for case statements
+                    return None
             elif cell[0] == '+':
                 number_list[0] += number_list.pop(1)
                 cell.pop(0)
@@ -78,17 +76,16 @@ def rpn(i):
                 number_list.append(float(cell[0]))
                 cell.pop(0)
         input_data[i] = str(number_list[0])
-        print "Finished Evaluating cell #", i, "value is", input_data[i]
+        print "Finished cell #", i, "in math loop. value is", input_data[i]
         return str(number_list[0])
 
 
 for i in range(1, len(input_data)):
     print "Starting New Cell"
-    print "input data looks like", input_data
+    print "Data is currently", input_data
     final_value = rpn(i)
-#    final_value = rpn(map(str.strip, input_data[i].split()))
     input_data[i] = final_value
-    print "Cell #",i, "Evaluates to", final_value
+    print "Cell #", i, "Evaluates to", final_value
     if final_value:
         output_file.write(final_value+"\n")
     else:
