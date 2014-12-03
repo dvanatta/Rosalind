@@ -10,7 +10,8 @@ size = map(int, input_data[0].split())
 history = []
 
 
-#I dont think I need the "has this expression been evaluated logic twice"
+# need to figure out where th history call goes. needs to be called only if cell isnt a number
+
 def mapping(pointer):
     """
     Takes in a reference (ie "A2") and returns value of that cell
@@ -20,9 +21,7 @@ def mapping(pointer):
     mapping_dict = {"A": 1, "B": 2}
     cell_value = (mapping_dict[pointer[0]]-1)*size[0]+int(pointer[1])
     new_cell = input_data[cell_value]
-    history.append(pointer.rstrip())
-    input_data[cell_value] = rpn(new_cell)
-    return input_data[cell_value]
+    return input_data[cell_value], cell_value
 
 
 def rpn(cell):
@@ -40,6 +39,7 @@ def rpn(cell):
            perform operation on stored numbers
     """
     print "fresh call to rpn, cell =", cell
+    print "input is", input_data
     if cell is None:
         return None
     elif ' ' not in cell and not any(value.isalpha() for value in cell):
@@ -47,12 +47,22 @@ def rpn(cell):
         print "cell already evaluated"
         return cell
     elif ' ' not in cell:
+        # cell has letter but no spaces; must be just pointer
         if cell.rstrip() in history:
+            print "before error cell, history", cell, history
             print "Cyclic Error"
             return None
-        # cell has letter but no spaces; must be just pointer
         else:
-            return mapping(cell)
+            #input_data[cell_value] = rpn(new_cell)
+            print "cell is pointer"
+            new_cell, k = rpn(mapping(cell))
+            print "points to", new_cell
+            if ' ' not in new_cell and not any(value.isalpha() for value in new_cell):
+                return new_cell
+            else:
+                history.append(cell.rstrip())
+                return new_cell
+            
     else:
     # cell is expresssion, need to do logic
         cell = cell.split()
@@ -61,10 +71,7 @@ def rpn(cell):
             print "entering cell eval loop cell=", cell
             print "numberlist", number_list
             if cell[0][0].isalpha():
-                print "in pointer loop to follow", cell[0]
-                ref_cell = mapping(cell[0])
-                print ref_cell, cell
-                cell[0] = ref_cell
+                 cell[0] = rpn(cell[0])
             # pythonic method for case statements
             elif cell[0] == '+':
                 number_list[0] += number_list.pop(1)
@@ -81,6 +88,7 @@ def rpn(cell):
             else:
                 number_list.append(float(cell[0]))
                 cell.pop(0)
+        input_data[cell_value] = str(number_list[0])
         print "end of cell loop numberlist", str(number_list)
         return str(number_list[0])
 
