@@ -10,21 +10,18 @@ size = map(int, input_data[0].split())
 history = []
 
 
-# need to figure out where th history call goes. needs to be called only if cell isnt a number
-
 def mapping(pointer):
     """
-    Takes in a reference (ie "A2") and returns value of that cell
-    Also keeps track of history to detect loops
+    Takes in a reference (ie "A2") and returns location of that cell (ie 2)
     """
     print "in mapping function to follow ref", pointer, "history is", history
+    history.append(pointer) 
     mapping_dict = {"A": 1, "B": 2}
     cell_value = (mapping_dict[pointer[0]]-1)*size[0]+int(pointer[1])
-    new_cell = input_data[cell_value]
-    return input_data[cell_value], cell_value
+    return cell_value
 
 
-def rpn(cell):
+def rpn(i):
     """
     Calculate Value of cell
    If cell is none -> error condition
@@ -38,40 +35,39 @@ def rpn(cell):
        if cell[i] is operator:
            perform operation on stored numbers
     """
-    print "fresh call to rpn, cell =", cell
-    print "input is", input_data
+    cell = input_data[i]
+    print "New call to rpn, cell=", cell
     if cell is None:
         return None
     elif ' ' not in cell and not any(value.isalpha() for value in cell):
         # if no (spaces or letters) cell doesn't need more evaluation
-        print "cell already evaluated"
+        print "Cell already evaluated"
         return cell
     elif ' ' not in cell:
+        # i think this loop needs to be removed because this first case of the logic evaluation will catch this.  
         # cell has letter but no spaces; must be just pointer
+        # check for cyclic errors 
         if cell.rstrip() in history:
-            print "before error cell, history", cell, history
             print "Cyclic Error"
             return None
         else:
-            #input_data[cell_value] = rpn(new_cell)
-            print "cell is pointer"
-            new_cell, k = rpn(mapping(cell))
-            print "points to", new_cell
-            if ' ' not in new_cell and not any(value.isalpha() for value in new_cell):
-                return new_cell
-            else:
-                history.append(cell.rstrip())
-                return new_cell
-            
+            print "Cell is pointer"
+#            history.append(cell.rstrip())
+            new_cell = rpn(mapping(cell.rstrip()))
     else:
-    # cell is expresssion, need to do logic
+        # cell is expresssion, need to do logic
         cell = cell.split()
         number_list = []
+        print "Cell is expression"
         while cell:
-            print "entering cell eval loop cell=", cell
-            print "numberlist", number_list
             if cell[0][0].isalpha():
-                 cell[0] = rpn(cell[0])
+                 print "cell was", cell
+                 cell[0] = rpn(mapping(cell[0].rstrip()))
+                 print "cell is now", cell
+ #                input_data[i] = cell
+                 print "input data is now", input_data
+                 if cell[0] is None:
+                     return None
             # pythonic method for case statements
             elif cell[0] == '+':
                 number_list[0] += number_list.pop(1)
@@ -88,18 +84,18 @@ def rpn(cell):
             else:
                 number_list.append(float(cell[0]))
                 cell.pop(0)
-        input_data[cell_value] = str(number_list[0])
-        print "end of cell loop numberlist", str(number_list)
+        input_data[i] = str(number_list[0])
+        print "Finished Evaluating cell #", i, "value is", input_data[i]
         return str(number_list[0])
 
 
 for i in range(1, len(input_data)):
     print "Starting New Cell"
     print "input data looks like", input_data
-    final_value = rpn(input_data[i])
+    final_value = rpn(i)
 #    final_value = rpn(map(str.strip, input_data[i].split()))
     input_data[i] = final_value
-    print "Cell Evaluates to", final_value
+    print "Cell #",i, "Evaluates to", final_value
     if final_value:
         output_file.write(final_value+"\n")
     else:
