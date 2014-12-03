@@ -41,8 +41,9 @@ def rpn(i):
         return None
     if ' ' not in cell and not any(value.isalpha() for value in cell):
         # if no (spaces or letters) cell doesn't need more evaluation
-        print "Cell already evaluated"
-        history = []
+        print "Cell already evaluated, remove it from history"
+        if len(history) > 0:
+            history.pop()
         return cell
     else:
         print "Cell is expression, evaluating cell"
