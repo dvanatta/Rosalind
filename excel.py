@@ -33,7 +33,6 @@ def rpn(i):
        if cell[i] is operator:
            perform operation on stored numbers
     """
-    global history
     cell = input_data[i]
     print "New call to rpn, cell=", cell
     if cell is None:
