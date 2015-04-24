@@ -382,22 +382,22 @@ def res_site(seq):
     seqB = comp(seq, "dna")
     print seq, seqB
     for i in range(len(seq)-11):
-        if (seq[i] == seqB[i+11] and seq[i+1] == seqB[i+10]
-            and seq[i+2] == seqB[i+9] and seq[i+3] == seqB[i+8]
-                and seq[i+4] == seqB[i+7] and seq[i+5] == seqB[i+6]):
+        if (seq[i] == seqB[i+11] and seq[i+1] == seqB[i+10] and
+            seq[i+2] == seqB[i+9] and seq[i+3] == seqB[i+8] and
+                seq[i+4] == seqB[i+7] and seq[i+5] == seqB[i+6]):
             print i+1, "12"
     for i in range(len(seq) - 9):
-        if (seq[i] == seqB[i+9] and seq[i+1] == seqB[i+8]
-            and seq[i+2] == seqB[i+7] and seq[i+3] == seqB[i+6]
-                and seq[i+4] == seqB[i+5]):
+        if (seq[i] == seqB[i+9] and seq[i+1] == seqB[i+8] and
+            seq[i+2] == seqB[i+7] and seq[i+3] == seqB[i+6] and
+                seq[i+4] == seqB[i+5]):
             print i+1, "10"
     for i in range(len(seq)-7):
-        if (seq[i] == seqB[i+7] and seq[i+1] == seqB[i+6]
-                and seq[i+2] == seqB[i+5] and seq[i+3] == seqB[i+4]):
+        if (seq[i] == seqB[i+7] and seq[i+1] == seqB[i+6] and
+                seq[i+2] == seqB[i+5] and seq[i+3] == seqB[i+4]):
             print i+1, "8"
     for i in range(len(seq)-5):
-        if (seq[i] == seqB[i+5] and seq[i+1] == seqB[i+4]
-                and seq[i+2] == seqB[i+3]):
+        if (seq[i] == seqB[i+5] and seq[i+1] == seqB[i+4] and
+                seq[i+2] == seqB[i+3]):
             print i+1, "6"
     for i in range(len(seq)-3):
         if seq[i] == seqB[i+3] and seq[i+1] == seqB[i+2]:
